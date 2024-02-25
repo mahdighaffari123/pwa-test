@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
-
+import basicSsl from "@vitejs/plugin-basic-ssl";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -10,6 +10,7 @@ export default defineConfig({
       injectRegister: "auto",
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,svg,json,ico,xml,webmanifest}"],
+        cleanupOutdatedCaches: false,
       },
       includeAssets: [
         "favicon.ico",
@@ -21,6 +22,7 @@ export default defineConfig({
         short_name: "MyApp",
         description: "My Awesome App description",
         theme_color: "#ffffff",
+        display: "standalone",
         icons: [
           {
             src: "pwa-192x192.png",
@@ -46,6 +48,18 @@ export default defineConfig({
           },
         ],
       },
+      registerType: "prompt",
+      devOptions: {
+        enabled: true,
+      },
+    }),
+    basicSsl({
+      /** name of certification */
+      name: "test",
+      /** custom trust domains */
+      domains: ["*.custom.com"],
+      /** custom certification directory */
+      certDir: "/Users/.../.devServer/cert",
     }),
   ],
 });
